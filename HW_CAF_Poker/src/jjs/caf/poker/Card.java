@@ -17,8 +17,12 @@ public class Card implements Comparable<Card> {
 		return cardValue;
 	}
 
-	public int compareTo(Card o) {
+	public int compareTo(Card cardToCompareTo) {
 		// Just redirect the comparison to the enum because it implicitly knows the order
-		return this.getCardValue().compareTo(o.getCardValue());
+		return cardToCompareTo.getCardValue().compareTo(this.getCardValue());
+	}
+	
+	public String toString(){
+		return getCardValue().toString() + " of " + getCardColor();
 	}
 }
