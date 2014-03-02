@@ -1,7 +1,12 @@
 package jjs.caf.poker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+/**
+ * @author Moi
+ *
+ */
 public class Player {
 	private ArrayList<Card> cards = new ArrayList<Card>();
 	private String name;
@@ -22,11 +27,11 @@ public class Player {
 		return name;
 	}
 	
-	public void sortHand() {
-//		Collections.sort(cards);
-//		Collections.
-//		Collections.sort(list);
-		
+ /**
+ * Sort the hand cards by the given order of the CardValue-enum
+ */
+public void sortHand() {
+		Collections.sort(cards);
 	}
 	Card getHighestCard() {
 		Card highestCard = null;

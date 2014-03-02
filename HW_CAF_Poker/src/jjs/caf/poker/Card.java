@@ -1,6 +1,6 @@
 package jjs.caf.poker;
 
-public class Card {
+public class Card implements Comparable<Card> {
 	private CardColor cardColor;
 	private CardValue cardValue;
 	
@@ -15,5 +15,10 @@ public class Card {
 
 	public CardValue getCardValue() {
 		return cardValue;
+	}
+
+	public int compareTo(Card o) {
+		// Just redirect the comparison to the enum because it implicitly knows the order
+		return this.getCardValue().compareTo(o.getCardValue());
 	}
 }
