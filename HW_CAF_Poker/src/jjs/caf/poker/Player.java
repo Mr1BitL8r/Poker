@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * @author 
- *
+ * @author
+ * 
  */
 public class Player {
 	private ArrayList<Card> cards = new ArrayList<Card>();
@@ -105,7 +105,8 @@ public class Player {
 	 * @return The found cards with the same card value or just the highest
 	 *         card.
 	 */
-	static ArrayList<Card> getSameCardsOrHighestCard(ArrayList<Card> tempHandCards) {
+	static ArrayList<Card> getSameCardsOrHighestCard(
+			ArrayList<Card> tempHandCards) {
 		ArrayList<Card> clonedHandCards = (ArrayList<Card>) tempHandCards
 				.clone();
 		ArrayList<Card> sameCards = new ArrayList<Card>();
@@ -144,26 +145,44 @@ public class Player {
 	 */
 	static boolean isStraight(ArrayList<Card> tempHandCards) {
 		boolean isStraight = true;
+		int startValue = 0; // If the first card is an ACE and the last one a
+							// TWO there might be a "small" straight (ACE, TWO,
+							// THREE, ...), so than start with the second
+							// highest card at index 1
 
 		// Avoid null pointers
 		if (tempHandCards != null && tempHandCards.size() > 1) {
-			// Compare the values of the next cards until they differ
-			//TODO: This needs to be enhanced for a straight starting with ACE, TWO, THREE, ...!
-			for (int j = 0; j < tempHandCards.size()-1; j++) {
+			// If the first card is an ACE and the last one a TWO there might be a
+			// "small" straight (ACE, TWO, THREE, ...)
+			if (tempHandCards.get(0).getCardValue() == CardValue.ACE
+					&& tempHandCards.get(tempHandCards.size() - 1).getCardValue() == CardValue.TWO) {
+				startValue = 1;
+			}
+			
+			// Compare the values of the next cards until they differ, if there is a straight starting with an ACE as a ONE, this will also be detected
+			for (int j = startValue; j < tempHandCards.size() - 1; j++) {
 				Card currentCard = tempHandCards.get(j);
-				Card nextCard = tempHandCards.get(j+1);
-				
-				// Compare the cards values for a descending straight, the ordinal values must be one apart for this
-				if (currentCard.getCardValue().ordinal() != nextCard.getCardValue().ordinal()+1) {
+				Card nextCard = tempHandCards.get(j + 1);
+
+				// Compare the cards values for a descending straight, the
+				// ordinal values must be one apart for this
+				if (currentCard.getCardValue().ordinal() != nextCard
+						.getCardValue().ordinal() + 1) {
 					isStraight = false;
 					break;
 				}
 			}
+
+			// Check if the first card is an ACE --> there might be a
+			// "small"
+			// straight (ACE, TWO, THREE, ...)
+
 		} else {
 			isStraight = false;
 		}
 		return isStraight;
 	}
+
 	/**
 	 * The method checks a given hand for a flush.
 	 * 
@@ -194,11 +213,11 @@ public class Player {
 		return isFlush;
 	}
 
-	
 	/**
 	 * Check the players hand cards for all poker combinations and return it.
 	 * 
-	 * @return the highest card combination as a <code>CardCombination</code> object.
+	 * @return the highest card combination as a <code>CardCombination</code>
+	 *         object.
 	 */
 	CardCombination getCardCombination() {
 		CardCombination highestCardCombination = null;
@@ -218,7 +237,7 @@ public class Player {
 		// Check the hand cards for a flush
 		isStraight = isStraight(tempHandCards);
 
-		if(!isStraight) {
+		if (!isStraight) {
 			// Check the deck for highest cards, pairs more of a kind (NOT Full
 			// house, Flush or so)
 			// and remove already added cards from the temporary deck
