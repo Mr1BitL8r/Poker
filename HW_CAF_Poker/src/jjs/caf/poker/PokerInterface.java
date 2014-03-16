@@ -1,6 +1,5 @@
 package jjs.caf.poker;
 
+//TODO: Implement this in a sensible way!
 public interface PokerInterface {
-	public void addPlayer(String name);
-	public Card drawCard();
 }

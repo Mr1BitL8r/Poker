@@ -1,5 +1,5 @@
 package jjs.caf.poker;
 
-public enum CardValue {
+public enum CardValueEnum {
 	TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, KNAVE, QUEEN, KING, ACE
 }

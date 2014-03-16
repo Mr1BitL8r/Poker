@@ -1,19 +1,19 @@
 package jjs.caf.poker;
 
 public class Card implements Comparable<Card> {
-	private CardColor cardColor;
-	private CardValue cardValue;
+	private CardColorEnum cardColor;
+	private CardValueEnum cardValue;
 	
-	Card(CardColor cardColor, CardValue cardValue){
+	Card(CardColorEnum cardColor, CardValueEnum cardValue){
 		this.cardColor = cardColor;
 		this.cardValue = cardValue;
 	}
 
-	public CardColor getCardColor() {
+	public CardColorEnum getCardColor() {
 		return cardColor;
 	}
 
-	public CardValue getCardValue() {
+	public CardValueEnum getCardValue() {
 		return cardValue;
 	}
 

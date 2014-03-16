@@ -1,5 +1,5 @@
 package jjs.caf.poker;
 
-public enum CardColor {
+public enum CardColorEnum {
 	DIAMONDS, HEARTS, SPADES, CLUBS 
 }
