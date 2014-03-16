@@ -20,7 +20,7 @@ public class Card implements Comparable<Card> {
 	public int compareTo(Card cardToCompareTo) {
 		// Just redirect the comparison to the enum because it implicitly knows the order
 		// The sorting order is descending, so the highest card will be at position 0
-		return cardToCompareTo.getCardValue().compareTo(this.getCardValue());
+		return this.getCardValue().compareTo(cardToCompareTo.getCardValue());
 	}
 	
 	public String toString(){

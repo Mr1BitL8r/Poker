@@ -12,6 +12,7 @@ import org.junit.runners.MethodSorters;
 public class PokerTest {
 	private Player player1, player2, player3;
 	private PokerTable pokerTable;
+	private CardCombinationsComparator cardCombinationsComparator = new CardCombinationsComparator();
 
 	@Before
 	public void setup() {
@@ -56,8 +57,7 @@ public class PokerTest {
 		player1.addCard(new Card(CardColorEnum.SPADES, CardValueEnum.TEN));
 
 		// Check for the combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(),
-				CardCombinationEnum.ONE_PAIR);
+		Assert.assertEquals(CardCombinationEnum.ONE_PAIR, player1.getHighestCardCombination().getCardCombinationEnum());
 	}
 
 	@Test
@@ -70,8 +70,7 @@ public class PokerTest {
 		player1.addCard(new Card(CardColorEnum.SPADES, CardValueEnum.TEN));
 
 		// Check for the combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(),
-				CardCombinationEnum.TWO_PAIR);
+		Assert.assertEquals(CardCombinationEnum.TWO_PAIR, player1.getHighestCardCombination().getCardCombinationEnum());
 	}
 
 	@Test
@@ -84,8 +83,7 @@ public class PokerTest {
 		player1.addCard(new Card(CardColorEnum.SPADES, CardValueEnum.TEN));
 
 		// Check for the combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(),
-				CardCombinationEnum.THREE_OF_A_KIND);
+		Assert.assertEquals(CardCombinationEnum.THREE_OF_A_KIND, player1.getHighestCardCombination().getCardCombinationEnum());
 	}
 	@Test
 	public void t25_straightHandCardsAceTest() {
@@ -100,8 +98,7 @@ public class PokerTest {
 		Assert.assertTrue(CardCombination.isStraight(player1.getCards()));
 
 		// Test the card combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(),
-				CardCombinationEnum.STRAIGHT);
+		Assert.assertEquals(CardCombinationEnum.STRAIGHT, player1.getHighestCardCombination().getCardCombinationEnum());
 	}
 
 	@Test
@@ -117,8 +114,7 @@ public class PokerTest {
 		Assert.assertTrue(CardCombination.isStraight(player1.getCards()));
 
 		// Test the card combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(),
-				CardCombinationEnum.STRAIGHT);
+		Assert.assertEquals(CardCombinationEnum.STRAIGHT, player1.getHighestCardCombination().getCardCombinationEnum());
 	}
 	@Test
 	public void t35_flushTest() {
@@ -133,7 +129,7 @@ public class PokerTest {
 		Assert.assertTrue(CardCombination.isFlush(player1.getCards()));
 
 		// Test the card combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(), CardCombinationEnum.FLUSH);
+		Assert.assertEquals(CardCombinationEnum.FLUSH, player1.getHighestCardCombination().getCardCombinationEnum());
 	}
 	
 	@Test
@@ -146,8 +142,7 @@ public class PokerTest {
 		player1.addCard(new Card(CardColorEnum.SPADES, CardValueEnum.KING));
 
 		// Check for the combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(),
-				CardCombinationEnum.FULL_HOUSE);
+		Assert.assertEquals(CardCombinationEnum.FULL_HOUSE, player1.getHighestCardCombination().getCardCombinationEnum());
 	}
 	
 	@Test
@@ -160,8 +155,7 @@ public class PokerTest {
 		player1.addCard(new Card(CardColorEnum.SPADES, CardValueEnum.TEN));
 
 		// Check for the combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(),
-				CardCombinationEnum.FOUR_OF_A_KIND);
+		Assert.assertEquals(CardCombinationEnum.FOUR_OF_A_KIND, player1.getHighestCardCombination().getCardCombinationEnum());
 	}
 
 		@Test
@@ -179,8 +173,29 @@ public class PokerTest {
 		Assert.assertTrue(CardCombination.isFlush(player1.getCards()));
 
 		// Test the card combination
-		Assert.assertEquals(player1.getHighestCardCombination().getCardCombinationEnum(),
-				CardCombinationEnum.STRAIGHT_FLUSH);
+		Assert.assertEquals(CardCombinationEnum.STRAIGHT_FLUSH, player1.getHighestCardCombination().getCardCombinationEnum());
+	}
+		
+	@Test
+	public void t61_pokerHandsNearlyTheSame(){
+		// Build a four of a kind hand
+		player1.addCard(new Card(CardColorEnum.HEARTS, CardValueEnum.FIVE));
+		player1.addCard(new Card(CardColorEnum.SPADES, CardValueEnum.FIVE));
+		player1.addCard(new Card(CardColorEnum.SPADES, CardValueEnum.ACE));
+		player1.addCard(new Card(CardColorEnum.DIAMONDS, CardValueEnum.KING));
+		player1.addCard(new Card(CardColorEnum.HEARTS, CardValueEnum.TEN));
+		player1.addCard(new Card(CardColorEnum.CLUBS, CardValueEnum.FOUR));
+		player1.addCard(new Card(CardColorEnum.HEARTS, CardValueEnum.TWO));
+		
+		player2.addCard(new Card(CardColorEnum.DIAMONDS, CardValueEnum.KING));
+		player2.addCard(new Card(CardColorEnum.HEARTS, CardValueEnum.KING));
+		player2.addCard(new Card(CardColorEnum.SPADES, CardValueEnum.ACE));
+		player2.addCard(new Card(CardColorEnum.HEARTS, CardValueEnum.QUEEN));
+		player2.addCard(new Card(CardColorEnum.HEARTS, CardValueEnum.TEN));
+		player2.addCard(new Card(CardColorEnum.HEARTS, CardValueEnum.FIVE));
+		player2.addCard(new Card(CardColorEnum.HEARTS, CardValueEnum.TWO));
+		
+		Assert.assertEquals(-1, cardCombinationsComparator.compare(player1.getHighestCardCombinations(), player2.getHighestCardCombinations()));		
 	}
 		
 	@Test(expected=PlayerAlreadyExistsException.class)

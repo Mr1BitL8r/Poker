@@ -54,10 +54,10 @@ public class Player {
 	}
 
 	CardCombination getHighestCardCombination(){
-		return playersHand.getHighestCardCombination();
+		return playersHand.getHighestCardCombinations().get(0);
 	}
-	public List<CardCombination> getCardCombinations() {
-		return playersHand.getCardCombinations();
+	public List<CardCombination> getHighestCardCombinations() {
+		return playersHand.getHighestCardCombinations();
 	}
 
 	public Card getHighestCard() {
@@ -68,11 +68,23 @@ public class Player {
 		return playersHand.getCards();
 	}
 
-	public ArrayList<CardCombination> getCardCombinationWithRiver(ArrayList<Card> river) {
-		return playersHand.getCardCombinationsWithRiver(river);
+	public List<CardCombination> getBasicCardCombinationsWithRiver(ArrayList<Card> river) {
+		return playersHand.getBasicCardCombinationsWithRiver(river);
 	}
 	
-	CardCombination getHighestCardCombinationsWithRiver(List<Card> river){
+	List<CardCombination> getHighestCardCombinationsWithRiver(List<Card> river){
 		return playersHand.getHighestCardCombinationsWithRiver(river);
+	}
+
+	public List<CardCombination> getHighestCardCombinationsWithRiver() {
+		return playersHand.getHighestCardCombinationsWithRiver();
+	}
+
+	public String showHighestCardCombinations() {
+		return name + "s cards:\n" + playersHand.getHighestCardCombinations();
+	}
+	
+	public String showHighestCardCombinationsWithRiver() {
+		return name + "s cards with river:\n" + getHighestCardCombinationsWithRiver();
 	}
 }

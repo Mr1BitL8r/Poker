@@ -10,7 +10,7 @@ public class CardCombination implements Comparable<CardCombination> {
 
 	public CardCombination(ArrayList<Card> cards) {
 		CardCombination tempCardCombination = CardCombination
-				.getHighestCardCombination(cards);
+				.getHighestCardCombinations(cards).get(0);
 		this.cardCombinationEnum = tempCardCombination.getCardCombinationEnum();
 		this.cards = cards;
 	}
@@ -35,11 +35,12 @@ public class CardCombination implements Comparable<CardCombination> {
 	 * @param cardsToSearchForCardCombinations
 	 *            The cards to search for a special card combination (will be
 	 *            removed from the cards-list!).
-	 * @return the highest card combination as a <code>CardCombination</code>
+	 * @return the highest card combinations as a <code>List</code>
 	 *         object.
 	 */
-	public static ArrayList<CardCombination> getCardCombination(
+	public static ArrayList<CardCombination> getBasicCardCombinations(
 			ArrayList<Card> cardsToSearchForCardCombinations) {
+		// Make sure that the list 
 		// Store a list of the temporary hand cards so that the given list can
 		// be manipulated
 		ArrayList<Card> tempHandCards = (ArrayList<Card>) (cardsToSearchForCardCombinations
@@ -57,10 +58,10 @@ public class CardCombination implements Comparable<CardCombination> {
 		if (isFlush && isStraight) {
 			cardCombinationList.add(new CardCombination(
 					CardCombinationEnum.STRAIGHT_FLUSH, tempHandCards));
-		} else if (isFlush) {
+		} else if (isFlush && !isStraight) {
 			cardCombinationList.add(new CardCombination(
 					CardCombinationEnum.FLUSH, tempHandCards));
-		} else {
+		} else if (!isFlush && isStraight){
 			cardCombinationList.add(new CardCombination(
 					CardCombinationEnum.STRAIGHT, tempHandCards));
 		}
@@ -76,21 +77,35 @@ public class CardCombination implements Comparable<CardCombination> {
 				cardCombinationList.add(cardCombination);
 			}
 		}
-		// Sort the list
-		Collections.sort(cardCombinationList);
+		sortCardCombinationsDescending(cardCombinationList);
 		
 		return cardCombinationList;
 	}
 
+	/**
+	 * Sort the given list in a descending order.
+	 * 
+	 * @param cardCombinations The list to sort in a descending order.
+	 */
+	public static void sortCardCombinationsDescending(
+			List<CardCombination> cardCombinations) {
+		// Sort the list descending
+		Collections.sort(cardCombinations);
+		Collections.reverse(cardCombinations);
+	}
+
 	// TODO Exchange that strange code with a sorting algorithm for a
 	// List<CardCombination> object. ^^
-	static public CardCombination getHighestCardCombination(
+	static public List<CardCombination> getHighestCardCombinations(
 			ArrayList<Card> cardsToSearch) {
 		// The highest card combination
 		CardCombinationEnum highestCardCombination = null;
 		// Stores the ordered card combinations including their cards
-		ArrayList<CardCombination> cardCombinationList = getCardCombination(cardsToSearch);
-
+		ArrayList<CardCombination> cardCombinationList = getBasicCardCombinations(cardsToSearch);
+		sortCardCombinationsDescending(cardCombinationList);
+		// Use the cloned list, so that the other list can be modified
+		ArrayList<CardCombination> cardCombiListClone = (ArrayList<CardCombination>) cardCombinationList.clone();
+		
 		// Will be used to determine the highest card combination
 		boolean isOnePair = false;
 		boolean isTwoPair = false;
@@ -103,10 +118,9 @@ public class CardCombination implements Comparable<CardCombination> {
 		CardCombination firstOnePair = null;
 
 		// For temporarily storing the first THREE OF A KIND (for the case if there is a FULL HOUSE...)
-		CardCombination firstThreeOfAKind = null;
+		CardCombination firstThreeOfAKind = null;		
 		
-		
-		for (CardCombination cardCombination : cardCombinationList) {
+		for (CardCombination cardCombination : cardCombiListClone) {
 			// Check for higher combinations
 			switch (cardCombination.getCardCombinationEnum()) {
 			case STRAIGHT_FLUSH:
@@ -166,24 +180,28 @@ public class CardCombination implements Comparable<CardCombination> {
 				break;
 			}
 		}
-		// Check the found basic combinations with the greater combinations
-		for (CardCombinationEnum cardCombinationEnum : CardCombinationEnum
-				.values()) {
-			if ((cardCombinationEnum.isOnePair() == isOnePair)
-					&& (cardCombinationEnum.isTwoPair() == isTwoPair)
-					&& (cardCombinationEnum.isStraight() == isStraight)
-					&& (cardCombinationEnum.isThreeOfAKind() == isThreeOfAKind)
-					&& (cardCombinationEnum.isFourOfAKind() == isFourOfAKind)
-					&& cardCombinationEnum.isFlush() == isFlush) {
-				highestCardCombination = cardCombinationEnum;
-			}
-		}
-		for (CardCombination cardCombination : cardCombinationList) {
-			if (highestCardCombination == cardCombination
-					.getCardCombinationEnum())
-				return cardCombination;
-		}
-		return null;
+		sortCardCombinationsDescending(cardCombinationList);
+		return cardCombinationList;
+//		
+//		// Check the found basic combinations with the greater combinations
+//		for (CardCombinationEnum cardCombinationEnum : CardCombinationEnum
+//				.values()) {
+//			if ((cardCombinationEnum.isOnePair() == isOnePair)
+//					&& (cardCombinationEnum.isTwoPair() == isTwoPair)
+//					&& (cardCombinationEnum.isStraight() == isStraight)
+//					&& (cardCombinationEnum.isThreeOfAKind() == isThreeOfAKind)
+//					&& (cardCombinationEnum.isFourOfAKind() == isFourOfAKind)
+//					&& cardCombinationEnum.isFlush() == isFlush) {
+//				highestCardCombination = cardCombinationEnum;
+//			}
+//		}
+//		
+//		for (CardCombination cardCombination : cardCombinationList) {
+//			if (highestCardCombination == cardCombination
+//					.getCardCombinationEnum())
+//				return cardCombination;
+//		}
+//		return null;
 	}
 
 	/**
@@ -279,12 +297,12 @@ public class CardCombination implements Comparable<CardCombination> {
 	/**
 	 * The method checks a given hand for a flush.
 	 * 
-	 * @param list
+	 * @param cards
 	 *            the hand cards to analyze for a flush.
 	 * @return <code>true</code> if the cards were a flush or <code>false</code>
 	 *         .
 	 */
-	public static boolean isStraight(List<Card> list) {
+	public static boolean isStraight(List<Card> cards) {
 		boolean isStraight = true;
 		int startValue = 0; // If the first card is an ACE and the last one a
 							// TWO there might be a "small" straight (ACE, TWO,
@@ -292,20 +310,20 @@ public class CardCombination implements Comparable<CardCombination> {
 							// highest card at index 1
 
 		// Avoid null pointers
-		if (list != null && list.size() > 1) {
+		if (cards != null && cards.size() >= 5) {
 			// If the first card is an ACE and the last one a TWO there might be
 			// a "small" straight (ACE, TWO, THREE, ...)
-			if (list.get(0).getCardValue() == CardValueEnum.ACE
-					&& list.get(list.size() - 1).getCardValue() == CardValueEnum.TWO) {
+			if (cards.get(0).getCardValue() == CardValueEnum.ACE
+					&& cards.get(cards.size() - 1).getCardValue() == CardValueEnum.TWO) {
 				startValue = 1;
 			}
 
 			// Compare the values of the next cards until they differ, if there
 			// is a straight starting with an ACE as a ONE, this will also be
 			// detected
-			for (int j = startValue; j < list.size() - 1; j++) {
-				Card currentCard = list.get(j);
-				Card nextCard = list.get(j + 1);
+			for (int j = startValue; j < cards.size() - 1; j++) {
+				Card currentCard = cards.get(j);
+				Card nextCard = cards.get(j + 1);
 
 				// Compare the cards values for a descending straight, the
 				// ordinal values must be one apart for this
@@ -355,5 +373,40 @@ public class CardCombination implements Comparable<CardCombination> {
 			// The card combination was higher or smaller than the given one
 			return cardCombinationEnumCompare;
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((cardCombinationEnum == null) ? 0 : cardCombinationEnum
+						.hashCode());
+		result = prime * result + ((cards == null) ? 0 : cards.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CardCombination other = (CardCombination) obj;
+		if (cardCombinationEnum != other.cardCombinationEnum)
+			return false;
+		if (cards == null) {
+			if (other.cards != null)
+				return false;
+		} else if (!cards.equals(other.cards))
+			return false;
+		return true;
+	}
+
+	public String toString(){
+		return cardCombinationEnum.toString() + " and cards " + cards.toString();
 	}
 }
