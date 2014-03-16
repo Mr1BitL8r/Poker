@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO Implement the tie and chips division for complex cases (all-in by a non-chipleader with two players still raising)
 public class TexadHoldEmTable extends PokerTable {
 
 	@Override
@@ -27,6 +28,7 @@ public class TexadHoldEmTable extends PokerTable {
 		// Offer each player time to act (raise, check, fold)
 		for (Player player : players) {
 			// TODO: Let the player act
+			player.act();
 		}
 	}
 
@@ -43,7 +45,7 @@ public class TexadHoldEmTable extends PokerTable {
 		// TODO Implement the winner stuff and distribute the pot...
 		List<Player> winners = new ArrayList<Player>();
 		// Is there a tie?
-		boolean tie = false;
+//		boolean tie = false;
 		
 		// Get the first player who did not fold
 		int firstPlayerWhoDidNotFold = 0;
@@ -77,10 +79,6 @@ public class TexadHoldEmTable extends PokerTable {
 				//TODO Remove the test output
 				System.out.println(players.get(i).showHighestCardCombinationsWithRiver());
 
-				CardCombination oldWinnersCC = winnersCardCombinations.get(0);
-				CardCombination currentPlayersCC = currentPlayersCardCombinations
-						.get(0);
-
 				CardCombinationsComparator cardCombinationsComparator = new CardCombinationsComparator();
 				int compareCardCombinationsResult = cardCombinationsComparator.compare(winnersCardCombinations, currentPlayersCardCombinations);
 				
@@ -95,7 +93,7 @@ public class TexadHoldEmTable extends PokerTable {
 					winners.add(players.get(i));
 					break;
 				case 0: // There was a tie
-					tie = true;
+//					tie = true;
 					// Add the player to the winners list
 					winners.add(players.get(i));
 					break;

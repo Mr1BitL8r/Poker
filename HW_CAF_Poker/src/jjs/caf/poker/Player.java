@@ -1,7 +1,6 @@
 package jjs.caf.poker;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -86,5 +85,10 @@ public class Player {
 	
 	public String showHighestCardCombinationsWithRiver() {
 		return name + "s cards with river:\n" + getHighestCardCombinationsWithRiver();
+	}
+
+	public void act() {
+		// TODO Implement the act logic
+		
 	}
 }

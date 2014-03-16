@@ -98,22 +98,12 @@ public class CardCombination implements Comparable<CardCombination> {
 	// List<CardCombination> object. ^^
 	static public List<CardCombination> getHighestCardCombinations(
 			ArrayList<Card> cardsToSearch) {
-		// The highest card combination
-		CardCombinationEnum highestCardCombination = null;
 		// Stores the ordered card combinations including their cards
 		ArrayList<CardCombination> cardCombinationList = getBasicCardCombinations(cardsToSearch);
 		sortCardCombinationsDescending(cardCombinationList);
 		// Use the cloned list, so that the other list can be modified
 		ArrayList<CardCombination> cardCombiListClone = (ArrayList<CardCombination>) cardCombinationList.clone();
 		
-		// Will be used to determine the highest card combination
-		boolean isOnePair = false;
-		boolean isTwoPair = false;
-		boolean isThreeOfAKind = false;
-		boolean isStraight = false;
-		boolean isFourOfAKind = false;
-		boolean isFlush = false;
-
 		// For temporarily storing the first ONE PAIR (for the case if there is a TWO PAIR...)
 		CardCombination firstOnePair = null;
 
@@ -123,27 +113,12 @@ public class CardCombination implements Comparable<CardCombination> {
 		for (CardCombination cardCombination : cardCombiListClone) {
 			// Check for higher combinations
 			switch (cardCombination.getCardCombinationEnum()) {
-			case STRAIGHT_FLUSH:
-				isStraight = true;
-			case FLUSH:
-				isFlush = true;
-				break;
-			case STRAIGHT:
-				isStraight = true;
-				break;
-			case FOUR_OF_A_KIND:
-				isFourOfAKind = true;
-				break;
 			case THREE_OF_A_KIND:
-				isThreeOfAKind = true;
 				// Temporarily store the first THREE_OF_A_KIND
 				firstThreeOfAKind = cardCombination;
 				break;
 			case ONE_PAIR:
-				if (isOnePair) {
-					isTwoPair = true;
-					isOnePair = false;
-					
+				if (firstOnePair != null) {
 					// Build the new card list for the TWO PAIR
 					ArrayList<Card> tempCards = new ArrayList<Card>();
 					tempCards.addAll(firstOnePair.getCards());
@@ -156,12 +131,11 @@ public class CardCombination implements Comparable<CardCombination> {
 					// and also the current ONE_PAIR
 					cardCombinationList.remove(cardCombination);
 				} else {
-					isOnePair = true;
 					// Temporarily store the first ONE_PAIR
 					firstOnePair = cardCombination;
 					
 					// Check if there is a FULL_HOUSE
-					if(isThreeOfAKind){
+					if(firstThreeOfAKind != null){
 						// Build the new card list for the FULL_HOUSE
 						ArrayList<Card> tempCards = new ArrayList<Card>();
 						tempCards.addAll(firstThreeOfAKind.getCards());
@@ -177,31 +151,10 @@ public class CardCombination implements Comparable<CardCombination> {
 				}
 				break;
 			default:
-				break;
 			}
 		}
 		sortCardCombinationsDescending(cardCombinationList);
 		return cardCombinationList;
-//		
-//		// Check the found basic combinations with the greater combinations
-//		for (CardCombinationEnum cardCombinationEnum : CardCombinationEnum
-//				.values()) {
-//			if ((cardCombinationEnum.isOnePair() == isOnePair)
-//					&& (cardCombinationEnum.isTwoPair() == isTwoPair)
-//					&& (cardCombinationEnum.isStraight() == isStraight)
-//					&& (cardCombinationEnum.isThreeOfAKind() == isThreeOfAKind)
-//					&& (cardCombinationEnum.isFourOfAKind() == isFourOfAKind)
-//					&& cardCombinationEnum.isFlush() == isFlush) {
-//				highestCardCombination = cardCombinationEnum;
-//			}
-//		}
-//		
-//		for (CardCombination cardCombination : cardCombinationList) {
-//			if (highestCardCombination == cardCombination
-//					.getCardCombinationEnum())
-//				return cardCombination;
-//		}
-//		return null;
 	}
 
 	/**
